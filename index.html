@@ -35,23 +35,37 @@
         </div>
         <main>
             <section id="pantalla_login">
-                <form id="form_login">
-                    <input type="text" id="input_nickname" placeholder="Nickname">
-                    <input type="text" id="input_nombre" placeholder="Nombre">
-                    <input type="text" id="input_apellido" placeholder="Apellido">
-                    <input type="text" id="input_direccion" placeholder="Dirección">
-                    <input type="number" id="input_tarjeta" placeholder="Datos de Tarjeta">
-                    <input type="password" placeholder="Contraseña">
-                    <div class="opciones_rol">
-                        <input type="radio" name="rol" value="comprador" checked id="rol_comprador">
-                        <label for="rol_comprador">Comprador</label>
-                        
-                        <input type="radio" name="rol" value="vendedor" id="rol_vendedor">
-                        <label for="rol_vendedor">Vendedor</label>
-                    </div>
-                    <button id="btn_login">Iniciar Sesión</button>
-                </form>
+                <div id="caja_login">
+                    <h2>Iniciar sesión</h2>
+                    <form>
+                        <input type="text" id="login_nickname" placeholder="Nickname">
+                        <input type="password" id="login_password" placeholder="Contraseña">
+                        <button id="btn_login">Ingresar</button>
+                    </form>
+                </div>
+                <div id="caja_link_registro">
+                    <p class="cambio_form">¿No tienes cuenta? <span id="link_registro">Inicia sesión</span></p>
+                </div>
             </section>
+                <div id="caja_registro" style="display: none;">
+                    <h2>Crear Cuenta</h2>
+                    <form>
+                        <input type="text" id="reg_nombre" placeholder="Nombre">
+                        <input type="text" id="reg_apellido" placeholder="Apellido">
+                        <input type="text" id="reg_direccion" placeholder="Dirección">
+                        <input type="number" id="reg_tarjeta" placeholder="Datos de Tarjeta">
+                        <input type="text" id="reg_nickname" placeholder="Nickname">
+                        <input type="password" id="reg_password" placeholder="Contraseña">
+                        <div class="opciones_rol">
+                            <input type="radio" name="reg_rol" value="comprador" id="reg_rol_comp" checked>
+                            <label for="reg_rol_comp">Comprador</label>
+                            <input type="radio" name="reg_rol" value="vendedor" id="reg_rol_vend">
+                            <label for="reg_rol_vend">Vendedor</label>
+                        </div>
+                        <button id="btn_registrar">Registrarse</button>
+                    </form>
+                    <p class="cambio_form">¿Ya tienes cuenta? <span id="link_login">Inicia sesión</span></p>
+                </div>
             <section id="pantalla_catalogo">
                 <div id="catalogo">
 
@@ -64,10 +78,28 @@
                     <input type="file" id="input_imagen" placeholder="Imagen">
                     <button type="button" id="btn_publicar">Publicar</button>
                 </form>
+                <div id="contenedor_historial_ventas">
+                    <h3>Historial de Ventas</h3>
+                    <div id="lista_historial_ventas">
+                        <p>Aún no hay ventas registradas.</p>
+                    </div>
+                </div>
             </section>
             <section id="pantalla_admin">
                 <div id="lista_usuarios"></div>
                 <div id="lista_productos"></div>
+            </section>
+            <section id="pantalla_pago">
+                <div id="caja_pago">
+                    <h2>Confirmar Pago</h2>
+                    <form>
+                        <input type="number" placeholder="Número de Tarjeta">
+                        <input type="text" placeholder="Fecha de Vencimiento (MM/AA)">
+                        <input type="number" placeholder="CVV">
+                        <button id="btn_confirmar_pago">Confirmar Pago</button>
+                        <button id="btn_cancelar_pago">Cancelar</button>
+                    </form>
+                </div>
             </section>
         </main>
     <script src="app.js"></script>

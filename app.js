@@ -10,36 +10,90 @@ const contador_carrito = document.getElementById('contador_carrito');
 const btn_publicar = document.getElementById('btn_publicar');
 const lista_usuarios = document.getElementById('lista_usuarios');
 const lista_productos = document.getElementById('lista_productos');
+const caja_login = document.getElementById('caja_login');
+const caja_registro = document.getElementById('caja_registro');
+const link_registro = document.getElementById('link_registro');
+const link_login = document.getElementById('link_login');
+const btn_registrar = document.getElementById('btn_registrar');
+const caja_link_registro = document.getElementById('caja_link_registro');
+const pantalla_pago = document.getElementById('pantalla_pago');
+const btn_confirmar_pago = document.getElementById('btn_confirmar_pago');
+const btn_cancelar_pago = document.getElementById('btn_cancelar_pago');
+const lista_historial_ventas = document.getElementById('lista_historial_ventas');
 
 const usuarios = [ 
-    { id: 1, nickname: 'juan123', rol: 'comprador' }, 
-    { id: 2, nickname: 'maria_vende', rol: 'vendedor' } ];
+    { id: 1, nickname: 'admin', pass: 'admin123', rol: 'admin' },
+    { id: 2, nickname: 'juan123', pass: '1234', rol: 'comprador' }, 
+    { id: 3, nickname: 'maria_vende', pass: '1234', rol: 'vendedor' } 
+];
 
 const productos = [
     {id: 1, nombre: 'Memoria RAM 16GB', precio: 120, img: 'img/img1.jpg' }, 
     {id: 2, nombre: 'SSD 1TB', precio: 150, img: 'img/img2.jpg' }, 
-    {id: 3, nombre: 'Intel core i7 11th Gen', precio: 370, img: 'img/img3.jpg' }];
+    {id: 3, nombre: 'Intel core i7 11th Gen', precio: 370, img: 'img/img3.jpg' }
+];
+
+const historialVentas = [
+    { id: 1, nombre: 'Memoria RAM 16GB', precio: 120 },
+    { id: 2, nombre: 'SSD 1TB', precio: 150 }
+];
 
 const carrito = [];
 
 btn_login.addEventListener('click', function(evento) {
     evento.preventDefault();
-    const nickname = document.getElementById('input_nickname').value;
-    const rolseleccionado = document.querySelector('input[name="rol"]:checked').value;
-    pantalla_login.style.display = 'none';
-    pantalla_catalogo.style.display = 'none';
-    pantalla_vendedor.style.display = 'none';
-    pantalla_admin.style.display = 'none';
-    btn_carrito.style.visibility = 'visible';
+    const nickname = document.getElementById('login_nickname').value;
+    const password = document.getElementById('login_password').value;
 
-    if(nickname === 'admin') {
-        pantalla_admin.style.display = 'flex';
-        cargarPanelAdmin();
-    }else if(rolseleccionado === 'comprador') {
-        pantalla_catalogo.style.display = 'block';
-    }else if(rolseleccionado === 'vendedor') {
-        pantalla_vendedor.style.display = 'block';
+    const usuarioEncontrado = usuarios.find(user => user.nickname === nickname && user.pass === password);
+
+    if (usuarioEncontrado) {
+        caja_login.style.display = 'none';
+        caja_registro.style.display = 'none';
+        caja_link_registro.style.display = 'none';
+
+        if (usuarioEncontrado.rol === 'admin') {
+            pantalla_admin.style.display = 'flex';
+            cargarPanelAdmin();
+        } else if (usuarioEncontrado.rol === 'comprador') {
+            pantalla_catalogo.style.display = 'block';
+        } else if (usuarioEncontrado.rol === 'vendedor') {
+        pantalla_vendedor.style.display = 'flex';
+        cargarHistorialVentas();
     }
+    } else {
+        alert("Credenciales incorrectas. Verifica tu nickname y contraseña.");
+    }
+});
+
+btn_registrar.addEventListener('click', function(evento) {
+    evento.preventDefault();
+    
+    const nickname = document.getElementById('reg_nickname').value;
+    const password = document.getElementById('reg_password').value;
+    const rolSeleccionado = document.querySelector('input[name="reg_rol"]:checked').value;
+
+    if(nickname === '' || password === '') {
+        alert("El Nickname y la Contraseña son obligatorios.");
+        return; 
+    }
+
+    const nuevoUsuario = {
+        id: usuarios.length + 1,
+        nickname: nickname,
+        pass: password,
+        rol: rolSeleccionado
+    };
+
+    usuarios.push(nuevoUsuario);
+    
+    alert("Cuenta creada con éxito. Ya puedes iniciar sesión.");
+    
+    caja_registro.style.display = 'none';
+    caja_login.style.display = 'block';
+    
+    document.getElementById('reg_nickname').value = '';
+    document.getElementById('reg_password').value = '';
 });
 
 btn_publicar.addEventListener('click', function(event) {
@@ -66,6 +120,35 @@ btn_carrito.addEventListener('click', function() {
     }
 });
 
+link_registro.addEventListener('click', function() {
+    caja_login.style.display = 'none';
+    caja_registro.style.display = 'block';
+    caja_link_registro.style.display = 'none';
+});
+
+link_login.addEventListener('click', function() {
+    caja_registro.style.display = 'none';
+    caja_login.style.display = 'block';
+    caja_link_registro.style.display = 'block';
+});
+
+btn_confirmar_pago.addEventListener('click', function(evento) {
+    evento.preventDefault();
+    alert("Pago exitoso. Gracias por tu compra en BinaryShop.");
+    
+    carrito.length = 0;
+    actualizarContadorCarrito();
+    
+    pantalla_pago.style.display = 'none';
+    pantalla_catalogo.style.display = 'block';
+});
+
+btn_cancelar_pago.addEventListener('click', function(evento) {
+    evento.preventDefault();
+    pantalla_pago.style.display = 'none';
+    pantalla_catalogo.style.display = 'block';
+});
+
 function cargarCatalogo(){
     contenedor_Catalogo.innerHTML = '';
     for(let i = 0; i < productos.length; i++){
@@ -90,7 +173,7 @@ function agregarAlCarrito(idProducto) {
 
 function actualizarContadorCarrito() {
     contador_carrito.innerText = carrito.length;
-    carrito_desplegable.innerHTML = '<h3>Tu Carrito</h3>';
+    carrito_desplegable.innerHTML = '<h3>Tu Carrito</h3><hr>';
     let total = 0;
 
     for (let i = 0; i < carrito.length; i++) {
@@ -99,15 +182,28 @@ function actualizarContadorCarrito() {
             <div class="producto_carrito">
                 <h4>${producto.nombre}</h4>
                 <p>Precio: $${producto.precio}</p>
+                <hr>
             </div>
         `;
-        total += carrito[i].precio;
+        total += producto.precio;
     }
-    carrito_desplegable.innerHTML += `<p>Total: $${total}</p>`;
+    
+    carrito_desplegable.innerHTML += `<p id="precio_total">Total: $${total}</p>`;
+    
+    if (carrito.length > 0) {
+        carrito_desplegable.innerHTML += `<button id="btn_pagar_carrito" onclick="abrirPago()">Pagar</button>`;
+    }
 }
 
 function comprarAhora(idProducto) {
-    console.log("Comprando de inmediato el producto:", idProducto);
+    const producto_elegido = productos.find(producto => producto.id === idProducto);
+    
+    carrito.length = 0; 
+    
+    carrito.push(producto_elegido);
+    actualizarContadorCarrito();
+    
+    abrirPago();
 }
 
 function eliminarUsuario(idUsuario) {
@@ -148,6 +244,35 @@ function cargarPanelAdmin() {
             <button onclick="eliminarProducto(${producto.id})">Eliminar</button>
         </p>`;
     }
+}
+
+function abrirPago() {
+    carrito_desplegable.style.display = 'none';
+    pantalla_catalogo.style.display = 'none';
+    pantalla_pago.style.display = 'block';
+}
+
+function cargarHistorialVentas() {
+    if (historialVentas.length === 0) {
+        lista_historial_ventas.innerHTML = '<p>Aún no hay ventas registradas.</p>';
+        return;
+    }
+
+    lista_historial_ventas.innerHTML = '';
+    let totalAcumulado = 0;
+
+    for (let i = 0; i < historialVentas.length; i++) {
+        const venta = historialVentas[i];
+        lista_historial_ventas.innerHTML += `
+            <div class="venta_item">
+                <span>🟢 ${venta.nombre}</span>
+                <span>$${venta.precio}</span>
+            </div>
+        `;
+        totalAcumulado += venta.precio;
+    }
+    
+    lista_historial_ventas.innerHTML += `<h4 class="total_ventas">Total acumulado: $${totalAcumulado}</h4>`;
 }
 
 cargarCatalogo();
