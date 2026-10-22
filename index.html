@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <title>BinaryShop</title>
+        <link rel="stylesheet" href="styles.css">
+        <head>
+  <link rel="stylesheet" href="https://googleapis.com">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
+</head>
+
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                <img src="img/logo.png" alt="Logo de BinaryShop">
+            </div>
+            <div id="nombre">
+                <h1>BinaryShop</h1>
+            </div>
+            <div id="carrito">
+                <button id="btn_carrito">
+                    <img src="img/carrito.png" alt="Carrito de compras">
+                    Carrito
+                    <span id="contador_carrito">0</span>
+                </button>
+            </div>
+        </header>
+        <div id="carrito_desplegable">
+            <h3>Carrito</h3>
+            <p>El carrito está vacío</p>
+        </div>
+        <main>
+            <section id="pantalla_login">
+                <form id="form_login">
+                    <input type="text" id="input_nickname" placeholder="Nickname">
+                    <input type="text" id="input_nombre" placeholder="Nombre">
+                    <input type="text" id="input_apellido" placeholder="Apellido">
+                    <input type="text" id="input_direccion" placeholder="Dirección">
+                    <input type="number" id="input_tarjeta" placeholder="Datos de Tarjeta">
+                    <input type="password" placeholder="Contraseña">
+                    <div class="opciones_rol">
+                        <input type="radio" name="rol" value="comprador" checked id="rol_comprador">
+                        <label for="rol_comprador">Comprador</label>
+                        
+                        <input type="radio" name="rol" value="vendedor" id="rol_vendedor">
+                        <label for="rol_vendedor">Vendedor</label>
+                    </div>
+                    <button id="btn_login">Iniciar Sesión</button>
+                </form>
+            </section>
+            <section id="pantalla_catalogo">
+                <div id="catalogo">
+
+                </div>
+            </section>
+            <section id="pantalla_vendedor">
+                <form>
+                    <input type="text" id="input_nombre_articulo" placeholder="Nombre del artículo">
+                    <input type="number" id="input_precio" placeholder="Precio">
+                    <input type="file" id="input_imagen" placeholder="Imagen">
+                    <button type="button" id="btn_publicar">Publicar</button>
+                </form>
+            </section>
+            <section id="pantalla_admin">
+                <div id="lista_usuarios"></div>
+                <div id="lista_productos"></div>
+            </section>
+        </main>
+    <script src="app.js"></script>
+    </body>
+</html>
